@@ -8,7 +8,7 @@ class BlogRepository(
     private val sessionManager: SessionManager
 ){
 
-    private val apiService : BlogApiInterface= JobPortalApiClient.apiService as BlogApiInterface
+    private val apiService : BlogApiInterface= JobPortalApiClient.blogApi
 
     suspend fun create_blog(
         request: BlogRequest

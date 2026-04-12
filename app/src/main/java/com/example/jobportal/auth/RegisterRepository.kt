@@ -4,7 +4,7 @@ class UserRepository {
 
     suspend fun registerUser(request: RegisterRequest): Result<RegisterResponse> {
         return try {
-            val response = JobPortalApiClient.apiService.registerUser(request)
+            val response = JobPortalApiClient.registerApi.registerUser(request)
 
             if (response.isSuccessful) {
                 Result.success(response.body()!!)
@@ -20,7 +20,7 @@ class UserRepository {
 
     suspend fun loginUser(request: LoginRequest): Result<LoginResponse> {
         return try {
-            val response = JobPortalApiClient.apiService.loginUser(request)
+            val response = JobPortalApiClient.registerApi.loginUser(request)
 
             if (response.isSuccessful) {
                 Result.success(response.body()!!)

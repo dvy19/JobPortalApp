@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,24 +24,36 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.jobportal.auth.SessionManager
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecruiterDetailsScreen(
 
-    viewModel: RecruiterProfileViewModel = viewModel(),
     rootNavController: NavController
 ) {
 
+
+    val context=LocalContext.current
+
+    val sessionManager= SessionManager(context)
+    val repository=RecruiterProfileRepository(sessionManager)
+    val viewModel: RecruiterDetailsViewModel = viewModel(
+        factory = RecruiterDetailsViewModelFactory(repository)
+    )
+
+    val state by viewModel.state.collectAsState()
     val recruiterState by viewModel.state.collectAsState()
     // State variables for each input field
     var companyName by remember { mutableStateOf("") }
     var fullName by remember { mutableStateOf("") }
     var position by remember { mutableStateOf("") }
     var city by remember { mutableStateOf("") }
-    var state by remember { mutableStateOf("") }
+    var stateLoc by remember { mutableStateOf("") }
 
     // Logic to check if all fields are populated
+
+
 
 
     Column(
@@ -93,8 +106,8 @@ fun RecruiterDetailsScreen(
             icon = Icons.Default.LocationOn)
 
         CustomTextField(
-            value = state,
-            onValueChange = { state = it },
+            value = stateLoc,
+            onValueChange = { stateLoc = it },
             label = "State",
             icon = Icons.Default.Home)
 
@@ -108,7 +121,7 @@ fun RecruiterDetailsScreen(
                     full_name = fullName,
                     position = position,
                     city = city,
-                    state = state
+                    state = stateLoc
                 )
 
                 viewModel.createRecruiterProfile(request)
@@ -120,17 +133,30 @@ fun RecruiterDetailsScreen(
                     fullName.isNotBlank() &&
                     position.isNotBlank() &&
                     city.isNotBlank() &&
-                    state.isNotBlank(), // Button is only active if logic is true
+                    stateLoc.isNotBlank(), // Button is only active if logic is true
             shape = MaterialTheme.shapes.medium
         ) {
             Text(text = "Submit Details", fontSize = 18.sp)
         }
 
-        LaunchedEffect(recruiterState) {
-            if (recruiterState is RecruiterProfileState.Success) {
-                rootNavController.navigate("recruiterHome") {
-                    popUpTo("signup") { inclusive = true }
+
+
+        LaunchedEffect(state) {
+            when (state) {
+
+
+
+                is RecruiterProfileState.Success -> {
+                    rootNavController.navigate("main") {
+
+                    }
                 }
+
+                is RecruiterProfileState.Error -> {
+                    // optional: show toast/snackbar
+                }
+
+                else -> {}
             }
         }
     }

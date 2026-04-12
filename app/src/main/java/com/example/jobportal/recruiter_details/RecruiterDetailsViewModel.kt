@@ -13,7 +13,7 @@ sealed class RecruiterProfileState {
     data class Error(val message: String) : RecruiterProfileState()
 }
 
-class RecruiterProfileViewModel(
+class RecruiterDetailsViewModel(
     private val repository: RecruiterProfileRepository
 ) : ViewModel() {
 

@@ -1,17 +1,31 @@
 package com.example.jobportal.auth
 
+import com.example.jobportal.blog.BlogApiInterface
+import com.example.jobportal.recruiter_details.RecruiterDetailApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
 object JobPortalApiClient {
 
     private const val BASE_URL = "https://job-portal-django-1-rc3u.onrender.com/"
 
-    val apiService: RegisterApiInterface by lazy {
+    private val retrofit: Retrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(RegisterApiInterface::class.java)
+    }
+
+    // ✅ Register API
+    val registerApi: RegisterApiInterface by lazy {
+        retrofit.create(RegisterApiInterface::class.java)
+    }
+
+    // ✅ Recruiter API (ADD THIS)
+    val recruiterApi: RecruiterDetailApi by lazy {
+        retrofit.create(RecruiterDetailApi::class.java)
+    }
+
+    val blogApi: BlogApiInterface by lazy {
+        retrofit.create(BlogApiInterface::class.java)
     }
 }

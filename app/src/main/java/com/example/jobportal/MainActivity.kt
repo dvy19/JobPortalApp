@@ -41,6 +41,8 @@ sealed class Screens(val route: String) {
     data object RecruiterJob:Screens("recruiterJob")
     data object RecruiterProfile:Screens("recruiterProfile")
 
+    data object Main:Screens("main")
+
 
 
 }

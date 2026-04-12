@@ -12,8 +12,7 @@ class RecruiterProfileRepository(
     private val sessionManager: SessionManager
     ) {
 
-        private val apiService: RecruiterDetailApi =
-            JobPortalApiClient.apiService as RecruiterDetailApi
+    private val apiService = JobPortalApiClient.recruiterApi
 
         // 🔹 Create Recruiter Profile
         suspend fun createRecruiterProfile(

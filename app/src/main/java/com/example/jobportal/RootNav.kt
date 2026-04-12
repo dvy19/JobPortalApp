@@ -13,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.jobportal.recruiterScreens.MainScreen
 import com.example.jobportal.recruiter_details.RecruiterDetailsScreen
 
 @Composable
@@ -36,8 +37,14 @@ fun RootNav(innerPadding: PaddingValues) {
         }
 
         composable(Screens.RecruiterDetails.route){
-            RecruiterDetailsScreen(rootNavController = rootNavController)
+            RecruiterDetailsScreen(rootNavController)
         }
+
+
+        composable(Screens.Main.route){
+            MainScreen(rootNavController)
+        }
+
 
 
     }
