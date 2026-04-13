@@ -1,4 +1,4 @@
-package com.example.jobportal.blog
+package com.example.jobportal.recruiterScreens.blog
 
 import com.example.jobportal.auth.JobPortalApiClient
 import com.example.jobportal.auth.SessionManager

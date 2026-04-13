@@ -17,16 +17,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 
 
 @Composable
-fun RecruiterBottomNavBar(navController: NavHostController) {
+fun RecruiterBottomNavBar(mainNavController: NavHostController) {
 
     val currentRoute =
-        navController.currentBackStackEntryAsState().value?.destination?.route
+        mainNavController.currentBackStackEntryAsState().value?.destination?.route
 
     BottomAppBar {
 
         IconButton(
             onClick = {
-                navController.navigate(Screens.RecruiterHome.route)
+                mainNavController.navigate(Screens.RecruiterHome.route)
             },
             modifier = Modifier.weight(1f)
         ) {
@@ -40,8 +40,8 @@ fun RecruiterBottomNavBar(navController: NavHostController) {
 
         IconButton(
             onClick = {
-                navController.navigate(Screens.RecruiterPost.route) {
-                    popUpTo(navController.graph.startDestinationId)
+                mainNavController.navigate(Screens.RecruiterPost.route) {
+                    popUpTo(mainNavController.graph.startDestinationId)
                     launchSingleTop = true
                 }
             },
@@ -57,7 +57,7 @@ fun RecruiterBottomNavBar(navController: NavHostController) {
 
         IconButton(
             onClick = {
-                navController.navigate(Screens.CreateBlog.route)
+                mainNavController.navigate(Screens.CreateBlog.route)
             },
             modifier = Modifier.weight(1f)
         ) {
@@ -71,7 +71,7 @@ fun RecruiterBottomNavBar(navController: NavHostController) {
 
         IconButton(
             onClick = {
-                navController.navigate(Screens.RecruiterJob.route)
+                mainNavController.navigate(Screens.RecruiterJob.route)
             },
             modifier = Modifier.weight(1f)
         ) {
@@ -85,8 +85,8 @@ fun RecruiterBottomNavBar(navController: NavHostController) {
 
         IconButton(
             onClick = {
-                navController.navigate(Screens.RecruiterProfile.route) {
-                    popUpTo(navController.graph.startDestinationId)
+                mainNavController.navigate(Screens.RecruiterProfile.route) {
+                    popUpTo(mainNavController.graph.startDestinationId)
                     launchSingleTop = true
                 }
             },

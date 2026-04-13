@@ -11,7 +11,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jobportal.RecruiterBottomNavBar
 import com.example.jobportal.Screens
-import com.example.jobportal.Screens.RecruiterJob
+import com.example.jobportal.recruiterScreens.blog.BlogScreen
+import com.example.jobportal.recruiterScreens.dashboard.RecruiterHome
+import com.example.jobportal.recruiterScreens.job.JobCreate
 
 @Composable
 fun MainScreen(rootNavController: NavController) {
@@ -44,7 +46,7 @@ fun MainScreen(rootNavController: NavController) {
             }
 
             composable(Screens.CreateBlog.route){
-                CreateBlog()
+                BlogScreen()
             }
 
             composable(Screens.RecruiterJob.route){

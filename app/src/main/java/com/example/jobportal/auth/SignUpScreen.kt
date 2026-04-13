@@ -1,12 +1,16 @@
 package com.example.jobportal.auth
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -27,7 +31,9 @@ fun SignUpScreen(
     val state = viewModel.registerState.value
 
     Column(
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(24.dp)
+            .background(Color.White),
+        verticalArrangement = Arrangement.Center
     ) {
 
         Text("Register", style = MaterialTheme.typography.headlineMedium)
@@ -115,4 +121,11 @@ fun SignUpScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
     }
+}
+
+@Preview
+@Composable
+fun PreviewSignUpScreen() {
+    SignUpScreen(rootNavController = rememberNavController())
+
 }

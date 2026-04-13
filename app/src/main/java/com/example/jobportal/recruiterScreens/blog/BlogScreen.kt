@@ -1,26 +1,79 @@
-package com.example.jobportal.blog
+package com.example.jobportal.recruiterScreens.blog
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jobportal.auth.SessionManager
+import com.example.jobportal.recruiter_details.RecruiterDetailsViewModel
+import com.example.jobportal.recruiter_details.RecruiterDetailsViewModelFactory
+import com.example.jobportal.recruiter_details.RecruiterProfileRepository
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BlogScreen() {
     // State variables to hold the user input
+
+
+    val context=LocalContext.current
+
+    val sessionManager= SessionManager(context)
+    val repository=BlogRepository(sessionManager)
+    val viewModel: BlogViewModel = viewModel(
+        factory = BlogViewModelFactory(repository)
+    )
+
+    var showDialog by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
+
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     val maxCharLimit = 500
 
+    LaunchedEffect(uiState) {
+
+
+        if (uiState is CreateBlogUiState.Success) {
+            showDialog = true
+
+            // ✅ Clear fields
+            title = ""
+            description = ""
+
+            viewModel.resetState() // VERY IMPORTANT
+        }
+    }
+
+    if (uiState is CreateBlogUiState.Loading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    CircularProgressIndicator() // Everything inside the Box is now centered
+}
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
+                    // Optional: navigate here if needed
+                    // navController.navigate("blogList")
+                }) {
+                    Text("Close")
+                }
+            },
+            title = { Text("Success") },
+            text = { Text("Blog created successfully!") }
+        )
+    }
     // Main container - fills the whole screen and is NOT scrollable
     Column(
         modifier = Modifier
@@ -87,7 +140,9 @@ fun BlogScreen() {
 
         // --- Submit Button ---
         Button(
-            onClick = { /* Handle Submit Logic Here */ },
+            onClick = {
+                viewModel.createBlog(title,description)
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),

@@ -14,7 +14,7 @@ interface RecruiterDetailApi {
     ): Response<RecruiterProfileResponse>
 
 
-    @GET("api/recruiter/profile/")
+    @GET("api/accounts/recruiter-profile/")
     suspend fun getRecruiterProfile(
         @Header("Authorization") token: String
     ): Response<RecruiterProfileResponse>
