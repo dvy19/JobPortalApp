@@ -2,6 +2,7 @@ package com.example.jobportal.auth
 
 import com.example.jobportal.recruiterScreens.blog.BlogApiInterface
 import com.example.jobportal.recruiterScreens.job.JobApiInterface
+import com.example.jobportal.recruiterScreens.post.PostApiInterface
 import com.example.jobportal.recruiter_details.RecruiterDetailApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,6 +29,10 @@ object JobPortalApiClient {
 
     val blogApi: BlogApiInterface by lazy {
         retrofit.create(BlogApiInterface::class.java)
+    }
+
+    val postApi: PostApiInterface by lazy {
+        retrofit.create(PostApiInterface::class.java)
     }
 
     val JobApi: JobApiInterface by lazy {

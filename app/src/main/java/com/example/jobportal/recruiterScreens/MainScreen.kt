@@ -14,6 +14,7 @@ import com.example.jobportal.Screens
 import com.example.jobportal.recruiterScreens.blog.BlogScreen
 import com.example.jobportal.recruiterScreens.dashboard.RecruiterHome
 import com.example.jobportal.recruiterScreens.job.JobCreate
+import com.example.jobportal.recruiterScreens.profile.RecruiterProfile
 
 @Composable
 fun MainScreen(rootNavController: NavController) {
@@ -42,7 +43,7 @@ fun MainScreen(rootNavController: NavController) {
 
 
             composable(Screens.RecruiterProfile.route) {
-                RecruiterProfile()
+                RecruiterProfile(mainNavController)
             }
 
             composable(Screens.CreateBlog.route){

@@ -3,6 +3,7 @@ package com.example.jobportal.recruiter_details
 
 
 import android.app.Application
+import android.util.Log
 import com.example.jobportal.auth.JobPortalApiClient
 import com.example.jobportal.auth.SessionManager
 import retrofit2.Response
@@ -21,10 +22,14 @@ class RecruiterProfileRepository(
 
             val token = sessionManager.getAuthToken()
 
+            Log.d("TOKEN_CHECK", token ?: "NULL")
+
             return apiService.createRecruiterProfile(
                 token = "Bearer $token",
                 request = request
             )
+
+            Log.d("FINAL_HEADER", "Bearer $token")
         }
 
 

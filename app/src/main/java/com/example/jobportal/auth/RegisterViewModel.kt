@@ -1,6 +1,7 @@
 package com.example.jobportal.auth
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -30,6 +31,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
                 val token = result.getOrNull()?.tokens?.access
 
                 if (token != null) {
+
                     sessionManager.saveAuthToken(token)
                     loginState.value = "Login Successful ✅"
                 } else {
@@ -52,6 +54,16 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
             if (result.isSuccess) {
 
                 val token = result.getOrNull()?.tokens?.access
+
+                val response = result.getOrNull()
+
+                Log.d("API_RESPONSE", response.toString())
+
+                val accessToken = response?.tokens?.access
+                val refreshToken = response?.tokens?.refresh
+
+                Log.d("ACCESS_TOKEN", accessToken ?: "NULL")
+                Log.d("REFRESH_TOKEN", refreshToken ?: "NULL")
 
                 if (token != null) {
                     sessionManager.saveAuthToken(token)

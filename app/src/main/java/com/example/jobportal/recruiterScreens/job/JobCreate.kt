@@ -16,21 +16,86 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.jobportal.auth.SessionManager
+import com.example.jobportal.recruiterScreens.blog.BlogRepository
+import com.example.jobportal.recruiterScreens.blog.BlogViewModel
+import com.example.jobportal.recruiterScreens.blog.BlogViewModelFactory
+import com.example.jobportal.recruiterScreens.blog.CreateBlogUiState
 import kotlinx.coroutines.Job
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun JobCreate() {
+
+
     var title by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
     var location by remember { mutableStateOf("") }
     var stipend by remember { mutableStateOf("") }
+    val context=LocalContext.current
+
+    val sessionManager= SessionManager(context)
+    val repository=JobRepository(sessionManager)
+    val viewModel: JobViewModel = viewModel(
+        factory = JobViewModelFactory(repository)
+    )
+
+
+
+    var showDialog by remember { mutableStateOf(false) }
+    val uiState by viewModel.uiState.collectAsState()
+
+
+    LaunchedEffect(uiState) {
+
+
+        if (uiState is CreateJobUiState.Success) {
+            showDialog = true
+
+            // ✅ Clear fields
+            title=""
+            description=""
+            location=""
+            stipend=""
+
+
+
+            viewModel.resetState() // VERY IMPORTANT
+        }
+    }
+
+    if (uiState is CreateJobUiState.Loading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator() // Everything inside the Box is now centered
+        }
+    }
+
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = { showDialog = false },
+            confirmButton = {
+                Button(onClick = {
+                    showDialog = false
+                    // Optional: navigate here if needed
+                    // navController.navigate("blogList")
+                }) {
+                    Text("Close")
+                }
+            },
+            title = { Text("Success") },
+            text = { Text("Job created successfully!") }
+        )
+    }
+
+
 
     // Light Theme Palette: Soft Blue and White
     val customColors = lightColorScheme(
@@ -116,7 +181,9 @@ fun JobCreate() {
 
                 // Submit Button
                 Button(
-                    onClick = { /* Handle Job Creation Logic */ },
+                    onClick = {
+                        viewModel.createJob(title,description,location,stipend.toFloat())
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(56.dp),
