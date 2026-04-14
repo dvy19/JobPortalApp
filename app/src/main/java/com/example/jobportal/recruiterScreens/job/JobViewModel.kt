@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.jobportal.recruiterScreens.blog.BlogRequest
 import com.example.jobportal.recruiterScreens.blog.BlogResponse
 import com.example.jobportal.recruiterScreens.blog.CreateBlogUiState
+import com.example.jobportal.recruiterScreens.post.PostResponse
+import com.example.jobportal.recruiterScreens.post.PostUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -18,12 +20,24 @@ sealed class CreateJobUiState {
 }
 
 
+sealed class JobUiState {
+    object Loading : JobUiState()
+    data class Success(val jobs: List<JobResponse>) : JobUiState()
+    data class Error(val message: String) : JobUiState()
+}
+
+
 class JobViewModel(
     private val repository: JobRepository
 ) :ViewModel(){
 
     private val _uiState = MutableStateFlow<CreateJobUiState>(CreateJobUiState.Idle)
     val uiState: StateFlow<CreateJobUiState> = _uiState
+
+
+    private val _jobUiState = MutableStateFlow<JobUiState>(JobUiState.Loading)
+    val jobUiState: StateFlow<JobUiState> = _jobUiState
+
 
     fun createJob(title: String, description: String,location:String,stipend:Float) {
         viewModelScope.launch {
@@ -42,6 +56,29 @@ class JobViewModel(
 
             } catch (e: Exception) {
                 _uiState.value = CreateJobUiState.Error(e.message ?: "Unknown error")
+            }
+        }
+    }
+
+    fun fetchJob() {
+        viewModelScope.launch {
+
+            _jobUiState.value = JobUiState.Loading
+
+            try {
+                val response = repository.getJob()
+
+                if (response.isSuccessful && response.body() != null) {
+                    _jobUiState.value = JobUiState.Success(response.body()!!)
+                } else if(response.body()==null){
+                    _jobUiState.value = JobUiState.Error("No job to display")
+                }else{
+
+                    _jobUiState.value = JobUiState.Error("Failed to load posts")
+                }
+
+            } catch (e: Exception) {
+                _jobUiState.value = JobUiState.Error(e.message ?: "Unknown error")
             }
         }
     }

@@ -16,8 +16,12 @@ sealed class CreatePostUiState {
     object Loading : CreatePostUiState()
     data class Success(val data: PostResponse) : CreatePostUiState()
     data class Error(val message: String) : CreatePostUiState()
+}
 
-    data class GetSuccess(val posts: List<PostResponse>) : CreatePostUiState()
+sealed class PostUiState {
+    object Loading : PostUiState()
+    data class Success(val posts: List<PostResponse>) : PostUiState()
+    data class Error(val message: String) : PostUiState()
 }
 
 
@@ -27,6 +31,9 @@ class PostViewModel(
 
     private val _uiState = MutableStateFlow<CreatePostUiState>(CreatePostUiState.Idle)
     val uiState: StateFlow<CreatePostUiState> = _uiState
+
+    private val _postUiState = MutableStateFlow<PostUiState>(PostUiState.Loading)
+    val postUiState: StateFlow<PostUiState> = _postUiState
 
     fun createPost(title: String, description: String) {
         viewModelScope.launch {
@@ -53,19 +60,22 @@ class PostViewModel(
     fun fetchPosts() {
         viewModelScope.launch {
 
-            _uiState.value = CreatePostUiState.Loading
+            _postUiState.value = PostUiState.Loading
 
             try {
                 val response = repository.getPosts()
 
                 if (response.isSuccessful && response.body() != null) {
-                    _uiState.value = CreatePostUiState.GetSuccess(response.body()!!)
-                } else {
-                    _uiState.value = CreatePostUiState.Error("Failed to load posts")
+                    _postUiState.value = PostUiState.Success(response.body()!!)
+                } else if(response.body()==null){
+                    _postUiState.value = PostUiState.Error("No post to display")
+                }else{
+
+                    _postUiState.value = PostUiState.Error("Failed to load posts")
                 }
 
             } catch (e: Exception) {
-                _uiState.value = CreatePostUiState.Error(e.message ?: "Unknown error")
+                _postUiState.value = PostUiState.Error(e.message ?: "Unknown error")
             }
         }
     }

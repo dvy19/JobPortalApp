@@ -5,6 +5,7 @@ import com.example.jobportal.recruiterScreens.blog.BlogRequest
 import com.example.jobportal.recruiterScreens.blog.BlogResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -17,4 +18,9 @@ interface JobApiInterface{
         @Header("Authorization") token: String,
         @Body request: JobRequest
     ) : Response<JobResponse>
+
+    @GET("api/jobs/recruiter/create_job/")
+    suspend fun getJob(
+        @Header("Authorization") token:String,
+    ):Response<List<JobResponse>>
 }
