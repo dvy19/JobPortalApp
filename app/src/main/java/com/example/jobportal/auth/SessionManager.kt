@@ -9,6 +9,18 @@ class SessionManager(context: Context) {
     companion object {
         private const val KEY_TOKEN = "auth_token"
         private const val KEY_IS_LOGGED_IN = "is_logged_in"
+        private const val ROLE="role"
+    }
+
+
+    fun saveRole(role:String){
+        prefs.edit().putString(ROLE,role).apply()
+
+    }
+
+
+    fun getRole():String?{
+        return prefs.getString(ROLE,null)
     }
 
     // ✅ Save token after login

@@ -67,6 +67,7 @@ class RegisterViewModel(application: Application) : AndroidViewModel(application
 
                 if (token != null) {
                     sessionManager.saveAuthToken(token)
+                    sessionManager.saveRole(role)
                     message.value = "Signup Successful ✅"
                     registerState.value=true
                 } else {

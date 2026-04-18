@@ -43,6 +43,14 @@ sealed class Screens(val route: String) {
 
     data object Main:Screens("main")
 
+    data object SeekerDetails:Screens("seekerDetails")
+    data object SeekerPost:Screens("seekerPost")
+    data object SeekerProfile:Screens("seekerProfile")
+    data object SeekerBlog:Screens("seekerBlogs")
+
+    data object SeekerMain:Screens("seekerMain")
+
+
 
 
 }

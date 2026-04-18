@@ -335,14 +335,14 @@ fun JobItem(
 
             // 🔹 User Info
             Text(
-                text = job.data.title,
+                text = job.title,
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold
             )
 
 
                 Text(
-                    text = job.data.description,
+                    text = job.description,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
@@ -352,7 +352,7 @@ fun JobItem(
 
             // 🔹 Title
             Text(
-                text = job.data.description,
+                text = job.description,
                 style = MaterialTheme.typography.titleSmall,
                 fontWeight = FontWeight.SemiBold
             )
@@ -361,7 +361,7 @@ fun JobItem(
 
             // 🔹 Description
             Text(
-                text = job.data.description,
+                text = job.description,
                 style = MaterialTheme.typography.bodyMedium,
                 maxLines = 3,
                 overflow = TextOverflow.Ellipsis

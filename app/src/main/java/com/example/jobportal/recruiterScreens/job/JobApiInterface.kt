@@ -22,5 +22,5 @@ interface JobApiInterface{
     @GET("api/jobs/recruiter/create_job/")
     suspend fun getJob(
         @Header("Authorization") token:String,
-    ):Response<List<JobResponse>>
+    ):Response<JobListResponse>
 }

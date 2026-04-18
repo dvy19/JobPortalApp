@@ -19,10 +19,12 @@ sealed class CreateJobUiState {
     data class Error(val message: String) : CreateJobUiState()
 }
 
-
 sealed class JobUiState {
     object Loading : JobUiState()
-    data class Success(val jobs: List<JobResponse>) : JobUiState()
+    data class Success(
+        val jobs: List<JobResponse>,
+        val nextPage: String?   // for pagination
+    ) : JobUiState()
     data class Error(val message: String) : JobUiState()
 }
 
@@ -69,12 +71,17 @@ class JobViewModel(
                 val response = repository.getJob()
 
                 if (response.isSuccessful && response.body() != null) {
-                    _jobUiState.value = JobUiState.Success(response.body()!!)
-                } else if(response.body()==null){
-                    _jobUiState.value = JobUiState.Error("No job to display")
-                }else{
 
-                    _jobUiState.value = JobUiState.Error("Failed to load posts")
+                    val jobs = response.body()!!.results
+
+                    if (jobs.isEmpty()) {
+                        _jobUiState.value = JobUiState.Error("No job to display")
+                    } else {
+                        _jobUiState.value = JobUiState.Success(jobs, nextPage = response.body()!!.next)
+                    }
+
+                } else {
+                    _jobUiState.value = JobUiState.Error("Failed to load jobs")
                 }
 
             } catch (e: Exception) {

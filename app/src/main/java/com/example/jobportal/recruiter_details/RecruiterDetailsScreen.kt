@@ -167,7 +167,8 @@ fun CustomTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    icon: ImageVector
+    icon: ImageVector,
+    modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
         value = value,

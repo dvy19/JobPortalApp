@@ -7,6 +7,7 @@ import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -19,6 +20,12 @@ fun SignUpScreen(
     viewModel: RegisterViewModel = viewModel()) {
 
     var isRegister=viewModel.registerState.value
+
+    val context=LocalContext.current
+
+    val sessionManager= SessionManager(context)
+
+    val role=sessionManager.getRole()
 
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -110,8 +117,14 @@ fun SignUpScreen(
 
         LaunchedEffect(isRegister) {
             if (isRegister) {
-                rootNavController.navigate("recruiterDetails") {
-                    popUpTo("signup") { inclusive = true }
+
+                if(selectedRole=="job_seeker"){
+                    rootNavController.navigate("seekerDetails")
+                }
+               else if (selectedRole == "recruiter"){
+                    rootNavController.navigate("recruiterDetails") {
+                        popUpTo("signup") { inclusive = true }
+                    }
                 }
             }
         }

@@ -8,12 +8,9 @@ data class JobRequest(
 
 )
 
-data class JobResponse(
-    val message:String,
-    val data: AfterJobRequest
-)
 
-data class AfterJobRequest(
+
+data class JobResponse(
     val title:String,
     val description:String,
     val location:String,
@@ -24,20 +21,25 @@ data class AfterJobRequest(
     val id:Int
 )
 
+data class JobListResponse(
+    val count: Int,
+    val next: String?,
+    val previous: String?,
+    val results: List<JobResponse>
+)
+
 /*
 {
-    "message": "Job created successfully",
-    "data": {
-        "id": 1,
-        "title": "internship",
-        "description": "djnciedc ed cedcnedc eiwdncoew co",
-        "location": "remote",
-        "stipend": "0.00",
-        "created_at": "2026-04-12T14:47:40.035098Z",
-        "updated_at": "2026-04-12T14:47:40.035133Z",
-        "user": 1
-    }
+    "id": 1,
+    "title": "vibrations20",
+    "description": "vibration",
+    "location": "remote",
+    "stipend": "0.00",
+    "created_at": "2026-04-14T16:27:50.335677Z",
+    "updated_at": "2026-04-14T16:27:50.335708Z",
+    "user": 12
 }
+
  */
 
 

@@ -22,7 +22,7 @@ class JobRepository(
 
     }
 
-    suspend fun getJob():Response<List<JobResponse>>{
+    suspend fun getJob():Response<JobListResponse>{
         val token=sessionManager.getAuthToken()
 
         return apiService.getJob(
