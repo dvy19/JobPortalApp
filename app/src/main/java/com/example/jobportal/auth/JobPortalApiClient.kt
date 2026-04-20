@@ -6,6 +6,7 @@ import com.example.jobportal.recruiterScreens.post.PostApiInterface
 import com.example.jobportal.recruiter_details.RecruiterDetailApi
 import com.example.jobportal.seeekerScreens.details.SeekerDetailApi
 import retrofit2.Retrofit
+import com.example.jobportal.skills.SkillsDetailApi
 import retrofit2.converter.gson.GsonConverterFactory
 object JobPortalApiClient {
 
@@ -34,6 +35,10 @@ object JobPortalApiClient {
 
     val seekerApi: SeekerDetailApi by lazy{
         retrofit.create(SeekerDetailApi::class.java)
+    }
+
+    val skillApi:SkillsDetailApi by lazy{
+        retrofit.create(SkillsDetailApi::class.java)
     }
 
     val postApi: PostApiInterface by lazy {

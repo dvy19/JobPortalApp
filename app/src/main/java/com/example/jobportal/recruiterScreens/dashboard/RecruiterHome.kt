@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -300,7 +301,7 @@ fun JobHorizontalList(
     onViewClick: () -> Unit,
     //onCommentClick: (JobResponse) -> Unit = {}
 ) {
-    LazyRow(
+    LazyColumn(
         modifier = Modifier.fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
@@ -323,7 +324,7 @@ fun JobItem(
 ) {
     Card(
         modifier = Modifier
-            .width(280.dp)
+            .fillMaxWidth()
             .padding(8.dp),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 6.dp)

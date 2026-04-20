@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import com.example.jobportal.Screens
 import com.example.jobportal.recruiterScreens.blog.BlogScreen
 import com.example.jobportal.seeekerScreens.dashboard.DashBoardScreen
+import com.example.jobportal.seeekerScreens.profile.ProfileScreen
 
 @Composable
 fun SeekerMain(rootNavController: NavController) {
