@@ -33,7 +33,7 @@ class SkillRepository(
     }
 
 
-    suspend fun getSeekerSkill(): Response<Skill> {
+    suspend fun getSeekerSkill(): Response<List<Skill>> {
 
         val token = sessionManager.getAuthToken()
 

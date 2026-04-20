@@ -20,7 +20,7 @@ interface SkillsDetailApi{
     @GET("api/accounts/skills/")
     suspend fun getSeekerSkill(
         @Header("Authorization") token:String
-    ):Response<Skill>
+    ):Response<List<Skill>>
 
 
 }

@@ -50,6 +50,8 @@ sealed class Screens(val route: String) {
 
     data object SeekerMain:Screens("seekerMain")
 
+    data object SeekerSkill:Screens("seekerSkill")
+
 
 
 

@@ -13,6 +13,8 @@ import com.example.jobportal.Screens
 import com.example.jobportal.recruiterScreens.blog.BlogScreen
 import com.example.jobportal.seeekerScreens.dashboard.DashBoardScreen
 import com.example.jobportal.seeekerScreens.profile.ProfileScreen
+import com.example.jobportal.skills.SkillScreen
+import com.example.jobportal.skills.SkillState
 
 @Composable
 fun SeekerMain(rootNavController: NavController) {
@@ -48,6 +50,9 @@ fun SeekerMain(rootNavController: NavController) {
                 BlogScreen()
             }
 
+            composable(Screens.SeekerSkill.route){
+                SkillScreen(mainNavController)
+            }
 
         }
     }

@@ -2,12 +2,10 @@ package com.example.jobportal.skills
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.jobportal.recruiter_details.RecruiterProfileData
-import com.example.jobportal.recruiter_details.RecruiterProfileRequest
-import com.example.jobportal.recruiter_details.RecruiterProfileState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+
 
 sealed class SkillState {
     object Idle : SkillState()
@@ -16,12 +14,23 @@ sealed class SkillState {
     data class Error(val message: String) : SkillState()
 }
 
+sealed class GetSkillState{
+    object Idle:GetSkillState()
+    object Loading: GetSkillState()
+    data class Success(val data:List<Skill>): GetSkillState()
+    data class Error(val message: String): GetSkillState()
+
+}
+
 class SkillViewModel(
     private val repository: SkillRepository
 ): ViewModel(){
 
     private val _state = MutableStateFlow<SkillState>(SkillState.Idle)
     val state: StateFlow<SkillState> = _state
+
+    private val _skillState= MutableStateFlow<GetSkillState>(GetSkillState.Idle)
+    val skillState:StateFlow<GetSkillState> = _skillState
 
     fun createSkill(request: AddSkillRequest) {
         viewModelScope.launch {
@@ -48,32 +57,30 @@ class SkillViewModel(
             }
         }
     }
-
     fun getSkill() {
         viewModelScope.launch {
 
-            _state.value = SkillState.Loading
+            _skillState.value = GetSkillState.Loading
 
             try {
                 val response = repository.getSeekerSkill()
+                val data = response.body()
 
-                if (response.isSuccessful && response.body() != null) {
-                    _state.value = SkillState.Success(
-                        response.body()!!
-                    )
+                if (response.isSuccessful && data != null) {
+                    _skillState.value = GetSkillState.Success(data)
                 } else {
-                    _state.value = SkillState.Error(
+                    _skillState.value = GetSkillState.Error(
                         "Error: ${response.code()}"
                     )
                 }
 
             } catch (e: Exception) {
-                _state.value = SkillState.Error(
+                _skillState.value = GetSkillState.Error(
                     e.message ?: "Something went wrong"
                 )
             }
         }
+    }
 
 
     }
-}

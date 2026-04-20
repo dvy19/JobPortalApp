@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.jobportal.Screens
 import com.example.jobportal.auth.SessionManager
 import com.example.jobportal.recruiterScreens.profile.ProfileScreen
 import com.example.jobportal.recruiter_details.RecruiterDetailsViewModel
@@ -82,7 +83,8 @@ fun ProfileScreen(
 
             SeekerProfileLayout(
                 name=profile.full_name,
-                city=profile.city
+                city=profile.city,
+                mainNavController = mainNavController
             )
 
 
@@ -100,6 +102,7 @@ fun ProfileScreen(
 fun SeekerProfileLayout(
     name:String,
     city:String,
+    mainNavController: NavController
 
 ) {
     Scaffold(
@@ -183,17 +186,23 @@ fun SeekerProfileLayout(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                ProfileOptionItem("Personal Details", Icons.Default.Info)
+                ProfileOptionItem(
+                    "Personal Details",
+                    Icons.Default.Info,
+                    onClick ={ mainNavController.navigate(Screens.SeekerSkill.route)   }
+                )
                 ProfileOptionItem("Resume", Icons.Default.Description)
                 ProfileOptionItem("Skills", Icons.Default.Star)
-                ProfileOptionItem("More", Icons.Default.MoreHoriz)
-            }
+                ProfileOptionItem("More", Icons.Default.MoreHoriz) }
         }
     }
 }
 
 @Composable
-fun ProfileOptionItem(title: String, icon: ImageVector) {
+fun ProfileOptionItem(
+    title: String,
+    icon: ImageVector,
+    onClick: () -> Unit = {}) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
