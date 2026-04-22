@@ -10,6 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.jobportal.Screens
+import com.example.jobportal.Screens.JobDetail
 import com.example.jobportal.recruiterScreens.blog.BlogScreen
 import com.example.jobportal.seeekerScreens.dashboard.DashBoardScreen
 import com.example.jobportal.seeekerScreens.profile.ProfileScreen
@@ -52,6 +53,16 @@ fun SeekerMain(rootNavController: NavController) {
 
             composable(Screens.SeekerSkill.route){
                 SkillScreen(mainNavController)
+            }
+
+            composable(Screens.JobDetail.route) { backStackEntry ->
+
+                val id = backStackEntry.arguments?.getString("id")
+
+                JobDisplay(
+                    id = id,
+                    mainNavController = mainNavController
+                )
             }
 
         }

@@ -8,6 +8,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 
 interface JobApiInterface{
@@ -23,4 +24,12 @@ interface JobApiInterface{
     suspend fun getJob(
         @Header("Authorization") token:String,
     ):Response<JobListResponse>
+
+    @GET("api/jobs/getJob/{id}/")
+    suspend fun getSingleJob(
+        @Header("Authorization") token:String,
+        @Path("id") id: Int
+    ): Response<JobResponse>
+
+    
 }

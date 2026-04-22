@@ -28,6 +28,15 @@ sealed class JobUiState {
     data class Error(val message: String) : JobUiState()
 }
 
+sealed class SingleJobUiState{
+
+    object Loading: SingleJobUiState()
+    data class Success(
+        val job: JobResponse
+        ) : SingleJobUiState()
+    data class Error(val message: String) : SingleJobUiState()
+}
+
 
 class JobViewModel(
     private val repository: JobRepository
@@ -39,6 +48,38 @@ class JobViewModel(
 
     private val _jobUiState = MutableStateFlow<JobUiState>(JobUiState.Loading)
     val jobUiState: StateFlow<JobUiState> = _jobUiState
+
+    private val _singleJobUiState = MutableStateFlow<SingleJobUiState>(SingleJobUiState.Loading)
+    val singleJobUiState: StateFlow<SingleJobUiState> = _singleJobUiState
+
+    fun fetchSingleJob(id: Int) {
+
+        viewModelScope.launch {
+
+            _singleJobUiState.value = SingleJobUiState.Loading
+
+            try {
+                val response = repository.GetSingleJob(id)
+
+                if (response.isSuccessful && response.body() != null) {
+
+                    _singleJobUiState.value = SingleJobUiState.Success(
+                        job = response.body()!!
+                    )
+
+                } else {
+                    _singleJobUiState.value = SingleJobUiState.Error(
+                        message = "Failed: ${response.code()}"
+                    )
+                }
+
+            } catch (e: Exception) {
+                _singleJobUiState.value = SingleJobUiState.Error(
+                    message = e.message ?: "Something went wrong"
+                )
+            }
+        }
+    }
 
 
     fun createJob(title: String, description: String,location:String,stipend:Float) {

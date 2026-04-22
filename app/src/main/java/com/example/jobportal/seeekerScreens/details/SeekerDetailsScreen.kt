@@ -196,7 +196,9 @@ fun SeekerDetailsScreen(
                     city = city,
                     state = stateLoc,
                     college_name = collegeName,
-                    date_of_birth = dob )
+                    date_of_birth = dob,
+                    skills = emptyList()
+                )
 
                 Log.d("button clicked", req.toString())
                 Log.d("result", state.toString())

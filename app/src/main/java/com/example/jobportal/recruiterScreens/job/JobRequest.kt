@@ -9,16 +9,16 @@ data class JobRequest(
 )
 
 
-
 data class JobResponse(
-    val title:String,
-    val description:String,
-    val location:String,
-    val stipend:Float,
-    val created_at:String,
-    val updated_at:String,
-    val user:Int,
-    val id:Int
+    val id: Int,
+    val skill_names: List<String>,
+    val title: String,
+    val description: String,
+    val location: String,
+    val stipend: String,
+    val created_at: String,
+    val updated_at: String,
+    val user: Int
 )
 
 data class JobListResponse(
@@ -43,5 +43,22 @@ data class JobListResponse(
  */
 
 
+
+// get job by id
+/*
+
+{
+    "id": 1,
+    "skill_names": [],
+    "title": "vibrations20",
+    "description": "vibration",
+    "location": "remote",
+    "stipend": "0.00",
+    "created_at": "2026-04-14T16:27:50.335677Z",
+    "updated_at": "2026-04-14T16:27:50.335708Z",
+    "user": 12
+}
+
+ */
 
 

@@ -1,5 +1,6 @@
 package com.example.jobportal.recruiterScreens.dashboard
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -167,7 +168,8 @@ fun RecruiterHome(
                 val jobs = (jobUiState as JobUiState.Success).jobs
                 JobHorizontalList(
                     jobs = jobs,
-                    onViewClick = {}
+                    onViewClick = {},
+                    mainNavController = mainNavController
                 )
             }
 
@@ -299,7 +301,8 @@ fun PostItem(
 fun JobHorizontalList(
     jobs: List<JobResponse>,
     onViewClick: () -> Unit,
-    //onCommentClick: (JobResponse) -> Unit = {}
+    //onCommentClick: (JobResponse) -> Unit = {},
+    mainNavController: NavController
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -309,7 +312,10 @@ fun JobHorizontalList(
 
             JobItem(
                 job= job,
-                onViewClick = {  },
+                onViewClick = {
+                    Log.d("job id", job.id.toString())
+                    mainNavController.navigate("jobDetail/${job.id}")
+                },
                 //onCommentClick = { onCommentClick(job) }
             )
         }

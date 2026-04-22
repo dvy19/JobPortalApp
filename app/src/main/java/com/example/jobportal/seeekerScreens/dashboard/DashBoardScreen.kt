@@ -71,6 +71,7 @@ fun DashBoardScreen(
     val jobUiState by jobViewModel.jobUiState.collectAsState()
     val state by viewModel.state.collectAsState()
 
+
     // 🔥 MAIN LAYOUT
     Column(
         modifier = Modifier.fillMaxSize()
@@ -105,6 +106,8 @@ fun DashBoardScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+
+
         // 🔹 POSTS SECTION
         when (postUiState) {
 
@@ -133,6 +136,8 @@ fun DashBoardScreen(
         Spacer(modifier = Modifier.height(16.dp))
 
 
+
+
         when(jobUiState){
 
             is JobUiState.Loading -> {
@@ -145,10 +150,12 @@ fun DashBoardScreen(
             }
 
             is JobUiState.Success -> {
+
                 val jobs = (jobUiState as JobUiState.Success).jobs
                 JobHorizontalList(
                     jobs = jobs,
-                    onViewClick = {}
+                    onViewClick = {},
+                    mainNavController = mainNavController
                 )
             }
 

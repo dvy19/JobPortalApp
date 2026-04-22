@@ -30,4 +30,14 @@ class JobRepository(
         )
     }
 
+    suspend fun GetSingleJob(id:Int): Response<JobResponse>{
+
+        val token=sessionManager.getAuthToken()
+
+        return apiService.getSingleJob(
+            token="Bearer $token",
+            id=id
+        )
+    }
+
 }

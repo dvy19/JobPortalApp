@@ -52,6 +52,10 @@ sealed class Screens(val route: String) {
 
     data object SeekerSkill:Screens("seekerSkill")
 
+    object JobDetail : Screens("jobDetail/{id}") {
+        fun createRoute(id: Int) = "jobDetail/$id"
+    }
+
 
 
 
