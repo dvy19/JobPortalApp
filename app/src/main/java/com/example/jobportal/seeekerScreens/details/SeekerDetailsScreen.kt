@@ -218,7 +218,7 @@ fun SeekerDetailsScreen(
                 is SeekerProfileState.Success -> {
                     rootNavController.navigate(Screens.SeekerMain.route)
 
-                    Log.d("messae","succesfull")
+                    Log.d("message","successfull")
                 }
 
 

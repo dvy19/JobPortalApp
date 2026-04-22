@@ -27,6 +27,10 @@ import com.example.jobportal.recruiterScreens.job.JobRepository
 import com.example.jobportal.recruiterScreens.job.JobViewModel
 import com.example.jobportal.recruiterScreens.job.JobViewModelFactory
 import com.example.jobportal.recruiterScreens.job.SingleJobUiState
+import com.example.jobportal.seeekerScreens.apply.ApplyJobFactory
+import com.example.jobportal.seeekerScreens.apply.ApplyJobRepository
+import com.example.jobportal.seeekerScreens.apply.ApplyJobUiState
+import com.example.jobportal.seeekerScreens.apply.ApplyJobViewModel
 import com.example.jobportal.seeekerScreens.details.SeekerDetailsViewModel
 import com.example.jobportal.seeekerScreens.details.SeekerDetailsViewModelFactory
 import com.example.jobportal.seeekerScreens.details.SeekerProfileRepository
@@ -46,6 +50,7 @@ fun JobDisplay(
     val jobViewModel: JobViewModel=viewModel(
         factory = JobViewModelFactory(jobRepo)
     )
+
 
 
     LaunchedEffect(id) {
@@ -76,7 +81,8 @@ fun JobDisplay(
                 description=singleJob.description,
                 skills=singleJob.skill_names,
                 location=singleJob.location,
-                createAt = singleJob.created_at
+                createAt = singleJob.created_at,
+                jobId = singleJob.id
             )
         }
 
@@ -97,6 +103,7 @@ fun JobDisplay(
 
 @Composable
 fun JobDisplayLayout(
+    jobId:Int,
     title:String,
     description:String,
     skills:List<String>,
@@ -104,7 +111,18 @@ fun JobDisplayLayout(
     location:String,
     createAt:String
 
+
 ){
+    val context=LocalContext.current
+
+    val sessionManager= SessionManager(context )
+    val applyJobRepo= ApplyJobRepository(sessionManager)
+    val applyViewModel: ApplyJobViewModel=viewModel (
+        factory = ApplyJobFactory(applyJobRepo)
+    )
+
+    val applyState= applyViewModel.applyJobState.collectAsState().value
+
 
     val scrollState = rememberScrollState()
 
@@ -112,14 +130,27 @@ fun JobDisplayLayout(
         bottomBar = {
             Surface(shadowElevation = 8.dp) {
                 Button(
-                    onClick = { /* Handle Apply */ },
+                    onClick = {
+                        if (applyState !is ApplyJobUiState.Loading) {
+                            applyViewModel.apply_job(jobId)
+                        }
+                    },
+                    enabled = applyState !is ApplyJobUiState.Loading,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp)
                         .height(56.dp),
                     shape = RoundedCornerShape(12.dp)
                 ) {
-                    Text("Apply Now", fontSize = 18.sp, fontWeight = FontWeight.SemiBold)
+                    Text(
+                        when (applyState) {
+                            is ApplyJobUiState.Error -> "Error ${applyState.message}"
+
+                            is ApplyJobUiState.Loading -> "Applying..."
+                            is ApplyJobUiState.Success -> "Applied ✅"
+                            else -> "Apply Now"
+                        }
+                    )
                 }
             }
         }

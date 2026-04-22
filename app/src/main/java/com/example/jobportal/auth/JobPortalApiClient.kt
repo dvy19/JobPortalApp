@@ -4,6 +4,7 @@ import com.example.jobportal.recruiterScreens.blog.BlogApiInterface
 import com.example.jobportal.recruiterScreens.job.JobApiInterface
 import com.example.jobportal.recruiterScreens.post.PostApiInterface
 import com.example.jobportal.recruiter_details.RecruiterDetailApi
+import com.example.jobportal.seeekerScreens.apply.ApplyJobInterface
 import com.example.jobportal.seeekerScreens.details.SeekerDetailApi
 import retrofit2.Retrofit
 import com.example.jobportal.skills.SkillsDetailApi
@@ -47,5 +48,9 @@ object JobPortalApiClient {
 
     val JobApi: JobApiInterface by lazy {
         retrofit.create(JobApiInterface::class.java)
+    }
+
+    val ApplyJobApi: ApplyJobInterface by lazy{
+        retrofit.create(ApplyJobInterface::class.java)
     }
 }
